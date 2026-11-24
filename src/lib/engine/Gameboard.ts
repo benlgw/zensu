@@ -3,7 +3,7 @@ import type { pieceRank, pieceColor } from "./Piece";
 
 type cell = Piece | null;
 
-export class Board {
+export class Gameboard {
   #gameboard: cell[][];
 
   constructor() {
