@@ -3,7 +3,7 @@ import type { pieceRank, pieceColor } from "./Piece";
 
 type cell = Piece | null;
 export type gameboard = cell[][];
-type posiiton = { row: number; column: number };
+export type position = { row: number; column: number };
 
 export class Gameboard {
   #gameboard: cell[][];
@@ -34,7 +34,7 @@ export class Gameboard {
     return Array.from({ length: 6 }, () => null);
   }
 
-  move(oldPosiiton: posiiton, newPosition: posiiton) {
+  move(oldPosiiton: position, newPosition: position) {
     for (const { row, column } of [oldPosiiton, newPosition]) {
       if (row < 0 || row > 9) {
         throw new Error("Row must be between 0 and 8, inclusive");
