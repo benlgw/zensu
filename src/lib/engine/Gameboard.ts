@@ -2,6 +2,7 @@ import { Piece } from "./Piece";
 import type { pieceRank, pieceColor } from "./Piece";
 
 type cell = Piece | null;
+export type board = cell[][];
 type posiiton = { row: number; column: number };
 
 export class Gameboard {
@@ -11,11 +12,11 @@ export class Gameboard {
     this.#gameboard = this.initBoard();
   }
 
-  get board(): cell[][] {
+  get board(): board {
     return this.#gameboard;
   }
 
-  initBoard(): cell[][] {
+  initBoard(): board {
     return [
       this.createRow(2, "red"),
       this.createRow(1, "red"),
