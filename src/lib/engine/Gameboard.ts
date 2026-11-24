@@ -2,6 +2,7 @@ import { Piece } from "./Piece";
 import type { pieceRank, pieceColor } from "./Piece";
 
 type cell = Piece | null;
+type posiiton = { row: number; column: number };
 
 export class Gameboard {
   #gameboard: cell[][];
@@ -31,4 +32,30 @@ export class Gameboard {
   createEmptyRow(): null[] {
     return Array.from({ length: 6 }, () => null);
   }
+
+  move(oldPosiiton: posiiton, newPosition: posiiton) {
+    for (const { row, column } of [oldPosiiton, newPosition]) {
+      if (row < 0 || row > 9) {
+        throw new Error("Row must be between 0 and 8, inclusive");
+      }
+      if (column < 0 || column > 9) {
+        throw new Error("Column must be between 0 and 8, inclusive");
+      }
+    }
+
+    const piece = this.#gameboard[oldPosiiton.row][oldPosiiton.column];
+    this.#gameboard[oldPosiiton.row][oldPosiiton.column] = null;
+    this.#gameboard[newPosition.row][newPosition.column] = piece;
+  }
 }
+
+// ["R", "R", "R", "R", "R", "R"],  // 0
+// ["r", "r", "r", "r", "r", "r"],  // 1
+// [ "",  "",  "",  "",  "",  ""],  // 2
+// [ "",  "",  "",  "",  "",  ""],  // 3
+// [ "",  "",  "",  "",  "",  ""],  // 4
+// [ "",  "",  "",  "",  "",  ""],  // 5
+// [ "",  "",  "",  "",  "",  ""],  // 6
+// ["b", "b", "b", "b", "b", "b"],  // 7
+// ["B", "B", "B", "B", "B", "B"],  // 8
+// //0    1    2    3    4    5
