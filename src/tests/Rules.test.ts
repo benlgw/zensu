@@ -1,41 +1,14 @@
 import { describe, expect, test } from "vitest";
 import { Gameboard } from "../lib/engine/Gameboard";
-import type { position } from "../lib/engine/Gameboard";
+import type { position as Position } from "../lib/engine/Gameboard";
 import { Piece } from "../lib/engine/Piece";
 import { Rules } from "../lib/engine/Rules";
-import type { move } from "../lib/engine/Rules";
+import { makeMove, place, position, squaresInRows } from "./helpers";
 
 const rules = new Rules();
 
-const position = (row: number, column: number): position => ({ row, column });
-
-/** Builds a move by hand, so winner() can be tested without needing a legal path. */
-function makeMove(
-  gameboard: Gameboard,
-  from: position,
-  to: position,
-  captured: position[] = [],
-): move {
-  return {
-    oldPosition: from,
-    newPosition: to,
-    piece: gameboard.pieceAt(from)!,
-    captured: captured.map((position) => ({ piece: gameboard.pieceAt(position)!, position })),
-  };
-}
-
-/** Test setup only: put a piece (or null) straight onto a square. */
-function place(gameboard: Gameboard, at: position, piece: Piece | null): void {
-  gameboard.gameboard[at.row][at.column] = piece;
-}
-
-/** Every square in the given rows, across the 6 playable columns. */
-function squaresInRows(...rows: number[]): position[] {
-  return rows.flatMap((row) => Array.from({ length: 6 }, (_, column) => position(row, column)));
-}
-
 /** Just the destination squares, for readable assertions. */
-function destinations(gameboard: Gameboard, from: position): position[] {
+function destinations(gameboard: Gameboard, from: Position): Position[] {
   return rules.legalMoves(gameboard, from).map((move) => move.newPosition);
 }
 

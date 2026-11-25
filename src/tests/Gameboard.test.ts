@@ -1,30 +1,7 @@
 import { expect, test } from "vitest";
 import { Gameboard } from "../lib/engine/Gameboard";
-import type { position } from "../lib/engine/Gameboard";
 import { Rules } from "../lib/engine/Rules";
-import type { move } from "../lib/engine/Rules";
-
-const position = (row: number, column: number): position => ({ row, column });
-
-/** Builds a move by hand. Gameboard.move applies whatever it's given; legality is Rules' job. */
-function makeMove(
-  gameboard: Gameboard,
-  from: position,
-  to: position,
-  captured: position[] = [],
-): move {
-  return {
-    oldPosition: from,
-    newPosition: to,
-    piece: gameboard.pieceAt(from)!,
-    captured: captured.map((position) => ({ piece: gameboard.pieceAt(position)!, position })),
-  };
-}
-
-/** Every square in the given rows, across the 6 playable columns. */
-function squaresInRows(...rows: number[]): position[] {
-  return rows.flatMap((row) => Array.from({ length: 6 }, (_, column) => position(row, column)));
-}
+import { makeMove, position, squaresInRows } from "./helpers";
 
 test("moves the piece from its old position to its new position", () => {
   const gameboard = new Gameboard();
