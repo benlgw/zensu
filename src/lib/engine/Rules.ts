@@ -1,5 +1,5 @@
-import { Gameboard } from "./Gameboard";
-import type { position } from "./Gameboard";
+import { Gameboard } from "./Gameboard.svelte";
+import type { position } from "./Gameboard.svelte";
 import { Piece } from "./Piece";
 import type { pieceColor, pieceRank } from "./Piece";
 

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { Gameboard } from "../lib/engine/Gameboard";
-import type { position as Position } from "../lib/engine/Gameboard";
+import { Gameboard } from "../lib/engine/Gameboard.svelte";
+import type { position as Position } from "../lib/engine/Gameboard.svelte";
 import { Piece } from "../lib/engine/Piece";
 import { Rules } from "../lib/engine/Rules";
 import { makeMove, place, position, squaresInRows } from "./helpers";

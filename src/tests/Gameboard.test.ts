@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Gameboard } from "../lib/engine/Gameboard";
+import { Gameboard } from "../lib/engine/Gameboard.svelte";
 import { Rules } from "../lib/engine/Rules";
 import { makeMove, position, squaresInRows } from "./helpers";
 

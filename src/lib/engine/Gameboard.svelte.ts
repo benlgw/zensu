@@ -3,24 +3,22 @@ import type { pieceRank, pieceColor } from "./Piece";
 import type { move } from "./Rules";
 
 type cell = Piece | null;
-export type gameboard = cell[][];
+export type grid = cell[][];
 export type position = { row: number; column: number };
 
 const ROWS = 9;
 const COLUMNS = 6;
 
 export class Gameboard {
-  #gameboard: cell[][];
+  // $state makes the grid reactive: Svelte sees in-place changes like
+  // this.#gameboard[row][column] = piece and re-renders the affected cells.
+  #gameboard = $state<grid>(this.initBoard());
 
-  constructor() {
-    this.#gameboard = this.initBoard();
-  }
-
-  get gameboard(): gameboard {
+  get grid(): grid {
     return this.#gameboard;
   }
 
-  initBoard(): gameboard {
+  initBoard(): grid {
     return [
       this.createRow(2, "red"),
       this.createRow(1, "red"),

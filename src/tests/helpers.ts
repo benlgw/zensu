@@ -1,4 +1,4 @@
-import type { Gameboard, position as Position } from "../lib/engine/Gameboard";
+import type { Gameboard, position as Position } from "../lib/engine/Gameboard.svelte";
 import type { Piece } from "../lib/engine/Piece";
 import type { move } from "../lib/engine/Rules";
 
@@ -24,7 +24,7 @@ export function makeMove(
 
 /** Test setup only: put a piece (or null) straight onto a square. */
 export function place(gameboard: Gameboard, at: Position, piece: Piece | null): void {
-  gameboard.gameboard[at.row][at.column] = piece;
+  gameboard.grid[at.row][at.column] = piece;
 }
 
 /** Every square in the given rows, across the 6 playable columns. */
