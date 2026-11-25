@@ -24,7 +24,7 @@ export class Gameboard {
     return [
       this.createRow(2, "red"),
       this.createRow(1, "red"),
-      ...Array.from({ length: 5 }, () => this.createEmptyRow()),
+      ...Array.from({ length: ROWS - 4 }, () => this.createEmptyRow()),
       this.createRow(1, "blue"),
       this.createRow(2, "blue"),
     ];
