@@ -6,6 +6,9 @@ type cell = Piece | null;
 export type gameboard = cell[][];
 export type position = { row: number; column: number };
 
+const ROWS = 8;
+const COLUMNS = 5;
+
 export class Gameboard {
   #gameboard: cell[][];
 
@@ -28,11 +31,11 @@ export class Gameboard {
   }
 
   createRow(rank: pieceRank, colour: pieceColor): Piece[] {
-    return Array.from({ length: 6 }, () => new Piece(rank, colour));
+    return Array.from({ length: ROWS }, () => new Piece(rank, colour));
   }
 
   createEmptyRow(): null[] {
-    return Array.from({ length: 6 }, () => null);
+    return Array.from({ length: ROWS }, () => null);
   }
 
   pieceAt(position: position): Piece | null {
@@ -40,7 +43,12 @@ export class Gameboard {
   }
 
   positionExists(position: position): boolean {
-    return position.row >= 0 && position.row <= 8 && position.column >= 0 && position.column <= 5;
+    return (
+      position.row >= 0 &&
+      position.row <= ROWS &&
+      position.column >= 0 &&
+      position.column <= COLUMNS
+    );
   }
 
   move(move: move): void {
