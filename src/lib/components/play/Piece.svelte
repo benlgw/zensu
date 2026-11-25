@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { Piece } from "../../engine/Piece";
-    import rick from "../../../assets/rick.jpg";
 
     let {
         piece,
