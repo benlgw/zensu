@@ -17,4 +17,8 @@ export class Piece {
   get colour(): pieceColor {
     return this.#colour;
   }
+
+  isEnemyOf(other: Piece): boolean {
+    return this.colour !== other.colour;
+  }
 }

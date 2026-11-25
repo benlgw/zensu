@@ -1,5 +1,6 @@
 import { Piece } from "./Piece";
 import type { pieceRank, pieceColor } from "./Piece";
+import type { move } from "./Rules";
 
 type cell = Piece | null;
 export type gameboard = cell[][];
@@ -34,19 +35,20 @@ export class Gameboard {
     return Array.from({ length: 6 }, () => null);
   }
 
-  move(oldPosiiton: position, newPosition: position) {
-    for (const { row, column } of [oldPosiiton, newPosition]) {
-      if (row < 0 || row > 9) {
-        throw new Error("Row must be between 0 and 8, inclusive");
-      }
-      if (column < 0 || column > 9) {
-        throw new Error("Column must be between 0 and 8, inclusive");
-      }
-    }
+  pieceAt(position: position): Piece | null {
+    return this.#gameboard[position.row][position.column];
+  }
 
-    const piece = this.#gameboard[oldPosiiton.row][oldPosiiton.column];
-    this.#gameboard[oldPosiiton.row][oldPosiiton.column] = null;
-    this.#gameboard[newPosition.row][newPosition.column] = piece;
+  positionExists(position: position): boolean {
+    return position.row >= 0 && position.row <= 8 && position.column >= 0 && position.column <= 5;
+  }
+
+  move(move: move): void {
+    this.#gameboard[move.oldPosition.row][move.oldPosition.column] = null;
+    for (const capture of move.captured) {
+      this.#gameboard[capture.position.row][capture.position.column] = null;
+    }
+    this.#gameboard[move.newPosition.row][move.newPosition.column] = move.piece;
   }
 }
 
