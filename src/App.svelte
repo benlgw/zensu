@@ -10,8 +10,9 @@
     let name = $state("");
 </script>
 
-{#if connection.status !== "connected"}
-    <Lobby {name} code={connection.code} join={(code: string) => connection.join(code)} />
+<!-- "disconnected" only happens after a game has started: keep showing the (now stopped) board. -->
+{#if connection.status === "connected" || connection.status === "disconnected"}
+    <Play {connection} />
 {:else}
-    <Play />
+    <Lobby {name} code={connection.code} join={(code: string) => connection.join(code)} />
 {/if}

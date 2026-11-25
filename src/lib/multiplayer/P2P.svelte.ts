@@ -22,11 +22,17 @@ function normaliseCode(input: string): string {
     .replace(/^ZENSU-/, "");
 }
 
+type Message = { type: string };
+
+function isMessage(data: unknown): data is Message {
+  return typeof data === "object" && data !== null && typeof (data as Message).type === "string";
+}
+
 export class P2P {
   #peer: Peer | null = null;
   #connection: DataConnection | null = null;
-  #messageHandlers = new Set<(data: unknown) => void>();
-  #buffer: unknown[] = [];
+  #handlers = new Map<string, Set<(message: any) => void>>();
+  #buffer: Message[] = [];
 
   #status = $state<Status>("idle");
   #role = $state<Role | null>(null);
@@ -115,14 +121,19 @@ export class P2P {
     }
   }
 
-  onMessage(handler: (data: unknown) => void): () => void {
-    this.#messageHandlers.add(handler);
+  on<T extends Message = any>(type: string, handler: (message: T) => void): () => void {
+    let handlers = this.#handlers.get(type);
+    if (!handlers) {
+      handlers = new Set();
+      this.#handlers.set(type, handlers);
+    }
+    handlers.add(handler);
 
-    const pending = this.#buffer;
-    this.#buffer = [];
-    pending.forEach((data) => handler(data));
+    const pending = this.#buffer.filter((message) => message.type === type);
+    this.#buffer = this.#buffer.filter((message) => message.type !== type);
+    pending.forEach((message) => handler(message as T));
 
-    return () => this.#messageHandlers.delete(handler);
+    return () => handlers.delete(handler);
   }
 
   leave(): void {
@@ -143,14 +154,22 @@ export class P2P {
       this.#status = "connected";
     });
 
-    connection.on("data", (data) => {
-      if (this.#messageHandlers.size === 0) this.#buffer.push(data);
-      else this.#messageHandlers.forEach((handler) => handler(data));
-    });
+    connection.on("data", (data) => this.#receive(data));
 
     connection.on("close", () => {
       this.#status = "disconnected";
     });
+  }
+
+  #receive(data: unknown): void {
+    if (!isMessage(data)) {
+      console.warn("Ignoring message without a type:", data);
+      return;
+    }
+
+    const handlers = this.#handlers.get(data.type);
+    if (handlers && handlers.size > 0) handlers.forEach((handler) => handler(data));
+    else this.#buffer.push(data);
   }
 
   #fail(message: string): void {

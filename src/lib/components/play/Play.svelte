@@ -1,13 +1,26 @@
 <script lang="ts">
+    import { onDestroy } from "svelte";
+
     import Gameboard from "./Gameboard.svelte";
+    import { OnlineGame } from "../../multiplayer/OnlineGame";
 
-    import { Game } from "../../engine/Game.svelte";
     import type { position } from "../../engine/Gameboard.svelte";
+    import type { P2P } from "../../multiplayer/P2P.svelte";
 
-    const game = new Game();
-    const flipped = false;
+    let {
+        connection,
+    }: {
+        connection: P2P;
+    } = $props();
 
-    const movableColour = $derived(game.winner ? null : game.currentTurn);
+    // svelte-ignore state_referenced_locally
+    const online = new OnlineGame(connection);
+    const game = online.game;
+    onDestroy(() => online.dispose());
+
+    const flipped = online.localColour === "red";
+
+    const movableColour = $derived(online.movableColour);
     let selected = $state<position | null>(null);
     const highlights = $derived(
         selected && game.gameboard.pieceAt(selected)?.colour === movableColour
@@ -16,7 +29,7 @@
     );
 
     function move(newPosition: position) {
-        if (selected) game.tryMove(selected, newPosition);
+        if (selected) online.play(selected, newPosition);
         selected = null;
     }
 </script>

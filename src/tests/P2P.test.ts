@@ -284,11 +284,10 @@ describe("joining", () => {
 describe("messaging", () => {
   test("send delivers data once connected", () => {
     const { p2p, connection } = connectedGuest();
-    p2p.send({ type: "move", from: { row: 7, column: 0 }, to: { row: 6, column: 0 } });
+    const move = { type: "move", oldPosition: { row: 7, column: 0 }, newPosition: { row: 6, column: 0 } };
+    p2p.send(move);
 
-    expect(connection.sent).toEqual([
-      { type: "move", from: { row: 7, column: 0 }, to: { row: 6, column: 0 } },
-    ]);
+    expect(connection.sent).toEqual([move]);
   });
 
   test("send does nothing before the connection is open", () => {
@@ -301,57 +300,103 @@ describe("messaging", () => {
     expect(latestPeer().connections[0].sent).toEqual([]);
   });
 
-  test("onMessage receives data from the other player", () => {
+  test("on(type) receives messages of that type", () => {
     const { p2p, connection } = connectedHost();
     const received: unknown[] = [];
-    p2p.onMessage((data) => received.push(data));
+    p2p.on("chat", (message) => received.push(message));
 
     connection.simulateData({ type: "chat", text: "hi" });
 
     expect(received).toEqual([{ type: "chat", text: "hi" }]);
   });
 
-  test("every listener receives each message", () => {
+  test("each message only goes to handlers for its own type", () => {
+    const { p2p, connection } = connectedHost();
+    const moves: unknown[] = [];
+    const chats: unknown[] = [];
+    p2p.on("move", (message) => moves.push(message));
+    p2p.on("chat", (message) => chats.push(message));
+
+    connection.simulateData({ type: "move", n: 1 });
+    connection.simulateData({ type: "chat", n: 2 });
+
+    expect(moves).toEqual([{ type: "move", n: 1 }]);
+    expect(chats).toEqual([{ type: "chat", n: 2 }]);
+  });
+
+  test("every handler for a type receives each message", () => {
     const { p2p, connection } = connectedHost();
     const a: unknown[] = [];
     const b: unknown[] = [];
-    p2p.onMessage((data) => a.push(data));
-    p2p.onMessage((data) => b.push(data));
+    p2p.on("chat", (message) => a.push(message));
+    p2p.on("chat", (message) => b.push(message));
 
-    connection.simulateData("hello");
+    connection.simulateData({ type: "chat" });
 
-    expect(a).toEqual(["hello"]);
-    expect(b).toEqual(["hello"]);
+    expect(a).toEqual([{ type: "chat" }]);
+    expect(b).toEqual([{ type: "chat" }]);
   });
 
-  test("messages that arrive before anyone listens are delivered, in order, to the first listener", () => {
-    const { p2p, connection } = connectedHost();
-    connection.simulateData(1);
-    connection.simulateData(2);
-
-    const first: unknown[] = [];
-    p2p.onMessage((data) => first.push(data));
-    const second: unknown[] = [];
-    p2p.onMessage((data) => second.push(data));
-
-    expect(first).toEqual([1, 2]);
-    expect(second).toEqual([]); // the buffer is only delivered once
-
-    connection.simulateData(3);
-    expect(first).toEqual([1, 2, 3]);
-    expect(second).toEqual([3]);
-  });
-
-  test("the function returned by onMessage stops that listener", () => {
+  test.each([
+    ["a string", "hello"],
+    ["a number", 42],
+    ["null", null],
+    ["an object without a type", { text: "hi" }],
+    ["a non-string type", { type: 7 }],
+  ])("ignores %s", (_, data) => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const { p2p, connection } = connectedHost();
     const received: unknown[] = [];
-    const stop = p2p.onMessage((data) => received.push(data));
+    p2p.on("chat", (message) => received.push(message));
 
-    connection.simulateData("before");
+    connection.simulateData(data);
+
+    expect(received).toEqual([]);
+    expect(warn).toHaveBeenCalled();
+  });
+
+  test("messages that arrive before a handler is registered are delivered, in order, when it is", () => {
+    const { p2p, connection } = connectedHost();
+    connection.simulateData({ type: "move", n: 1 });
+    connection.simulateData({ type: "move", n: 2 });
+
+    const first: unknown[] = [];
+    p2p.on("move", (message) => first.push(message));
+    const second: unknown[] = [];
+    p2p.on("move", (message) => second.push(message));
+
+    expect(first).toEqual([{ type: "move", n: 1 }, { type: "move", n: 2 }]);
+    expect(second).toEqual([]); // buffered messages are only delivered once
+
+    connection.simulateData({ type: "move", n: 3 });
+    expect(first.at(-1)).toEqual({ type: "move", n: 3 });
+    expect(second).toEqual([{ type: "move", n: 3 }]);
+  });
+
+  test("buffered messages wait for a handler of their own type", () => {
+    const { p2p, connection } = connectedHost();
+    connection.simulateData({ type: "move", n: 1 });
+
+    // A chat handler registering first must not take the buffered move.
+    const chats: unknown[] = [];
+    p2p.on("chat", (message) => chats.push(message));
+    expect(chats).toEqual([]);
+
+    const moves: unknown[] = [];
+    p2p.on("move", (message) => moves.push(message));
+    expect(moves).toEqual([{ type: "move", n: 1 }]);
+  });
+
+  test("the function returned by on() stops that handler", () => {
+    const { p2p, connection } = connectedHost();
+    const received: unknown[] = [];
+    const stop = p2p.on("chat", (message) => received.push(message));
+
+    connection.simulateData({ type: "chat", text: "before" });
     stop();
-    connection.simulateData("after");
+    connection.simulateData({ type: "chat", text: "after" });
 
-    expect(received).toEqual(["before"]);
+    expect(received).toEqual([{ type: "chat", text: "before" }]);
   });
 });
 
@@ -376,11 +421,11 @@ describe("disconnecting", () => {
 
   test("leave drops buffered messages", () => {
     const { p2p, connection } = connectedHost();
-    connection.simulateData("stale");
+    connection.simulateData({ type: "chat", text: "stale" });
     p2p.leave();
 
     const received: unknown[] = [];
-    p2p.onMessage((data) => received.push(data));
+    p2p.on("chat", (message) => received.push(message));
     expect(received).toEqual([]);
   });
 
