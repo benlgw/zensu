@@ -21,6 +21,11 @@ function makeMove(
   };
 }
 
+/** Every square in the given rows, across the 6 playable columns. */
+function squaresInRows(...rows: number[]): position[] {
+  return rows.flatMap((row) => Array.from({ length: 6 }, (_, column) => position(row, column)));
+}
+
 test("moves the piece from its old position to its new position", () => {
   const gameboard = new Gameboard();
   const piece = gameboard.pieceAt(position(7, 0));
@@ -82,4 +87,30 @@ test("applies a move produced by Rules.legalMoves", () => {
 
   expect(gameboard.pieceAt(position(8, 0))).toBeNull();
   expect(gameboard.pieceAt(position(6, 0))).toBe(move.piece);
+});
+
+test("playerHasPieces is true for both colours on the starting board", () => {
+  const gameboard = new Gameboard();
+  expect(gameboard.playerHasPieces("red")).toBe(true);
+  expect(gameboard.playerHasPieces("blue")).toBe(true);
+});
+
+test("playerHasPieces is false once every piece of a colour is captured", () => {
+  const gameboard = new Gameboard();
+
+  // Not a legal move: one blue move that captures all of red's pieces (rows 0 and 1).
+  gameboard.move(makeMove(gameboard, position(7, 0), position(6, 0), squaresInRows(0, 1)));
+
+  expect(gameboard.playerHasPieces("red")).toBe(false);
+  expect(gameboard.playerHasPieces("blue")).toBe(true);
+});
+
+test("playerHasPieces is still true with a single piece left", () => {
+  const gameboard = new Gameboard();
+
+  // Capture every red piece except the one on row 1, column 5.
+  const allButOne = squaresInRows(0, 1).filter((p) => !(p.row === 1 && p.column === 5));
+  gameboard.move(makeMove(gameboard, position(7, 0), position(6, 0), allButOne));
+
+  expect(gameboard.playerHasPieces("red")).toBe(true);
 });

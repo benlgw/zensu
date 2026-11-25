@@ -70,4 +70,15 @@ export class Rules {
 
     return moves;
   }
+
+  winner(gameboard: Gameboard, move: move): pieceColor | null {
+    const winningRow = (colour: pieceColor) => (colour === "blue" ? 0 : 8);
+    const player = move.piece.colour;
+    const opponent = player === "blue" ? "red" : "blue";
+
+    if (move.newPosition.row === winningRow(player)) return player;
+    if (move.captured.length > 0 && !gameboard.playerHasPieces(opponent)) return player;
+
+    return null;
+  }
 }

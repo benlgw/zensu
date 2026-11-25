@@ -51,6 +51,10 @@ export class Gameboard {
     );
   }
 
+  playerHasPieces(colour: pieceColor): boolean {
+    return this.#gameboard.some((row) => row.some((piece) => piece?.colour === colour));
+  }
+
   move(move: move): void {
     this.#gameboard[move.oldPosition.row][move.oldPosition.column] = null;
     for (const capture of move.captured) {
