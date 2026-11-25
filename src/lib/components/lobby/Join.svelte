@@ -31,7 +31,7 @@
             <h1 class="join-title">Join a game</h1>
             <div class="join-game">
                 <input type="text" placeholder="Code" bind:value={joinCode} />
-                <button onclick={() => join(joinCode)}>Join</button>
+                <button disabled={joinCode === code} onclick={() => join(joinCode)}>Join</button>
             </div>
         </section>
     {/if}
