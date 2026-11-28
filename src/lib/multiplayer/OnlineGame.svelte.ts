@@ -33,12 +33,15 @@ export class OnlineGame {
     return this.game.currentTurn === this.localColour ? this.localColour : null;
   }
 
+  onMove: () => void = () => {};
+
   play(oldPosition: position, newPosition: position): boolean {
     if (this.movableColour === null) return false;
     if (!this.game.tryMove(oldPosition, newPosition)) return false;
 
     const message: MoveMessage = { type: "move", oldPosition, newPosition };
     this.#connection.send(message);
+    this.onMove();
     return true;
   }
 
@@ -52,7 +55,9 @@ export class OnlineGame {
       !this.game.tryMove(message.oldPosition, message.newPosition)
     ) {
       console.error("Couldn't apply the opponent's move:", message);
+      return;
     }
+    this.onMove();
   }
 }
 

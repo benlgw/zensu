@@ -7,6 +7,8 @@
     import { Chat } from "../../multiplayer/Chat.svelte";
     import ChatBox from "./Chat.svelte";
 
+    import dropSoundUrl from "../../../assets/sounds/percussive-hit.mp3";
+
     import type { position } from "../../engine/Gameboard.svelte";
     import type { P2P } from "../../multiplayer/P2P.svelte";
 
@@ -45,6 +47,11 @@
         if (selected) online.play(selected, newPosition);
         selected = null;
     }
+
+    const dropSound = new Audio(dropSoundUrl);
+    online.onMove = () => {
+        dropSound.play();
+    };
 </script>
 
 <div class="play">

@@ -186,6 +186,38 @@ describe("receiving moves", () => {
   });
 });
 
+describe("onMove", () => {
+  test("runs for both players when either player moves", async () => {
+    const { host, guest } = connectedPair();
+    const hostMoves = vi.fn();
+    const guestMoves = vi.fn();
+    host.onMove = hostMoves;
+    guest.onMove = guestMoves;
+
+    host.play(at(7, 0), at(6, 0));
+    await flush();
+    expect(hostMoves).toHaveBeenCalledTimes(1);
+    expect(guestMoves).toHaveBeenCalledTimes(1);
+
+    guest.play(at(1, 0), at(2, 0));
+    await flush();
+    expect(hostMoves).toHaveBeenCalledTimes(2);
+    expect(guestMoves).toHaveBeenCalledTimes(2);
+  });
+
+  test("doesn't run for a move that didn't happen", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const { host, hostConnection } = connectedPair();
+    const hostMoves = vi.fn();
+    host.onMove = hostMoves;
+
+    host.play(at(7, 0), at(5, 0)); // illegal: a blue 1 can't move up 2
+    hostConnection.receive({ type: "move", oldPosition: at(1, 0), newPosition: at(2, 0) } as any); // not red's turn
+
+    expect(hostMoves).not.toHaveBeenCalled();
+  });
+});
+
 describe("the game stopping", () => {
   test("a full random game ends with the same board and winner for both players", async () => {
     const error = vi.spyOn(console, "error");
