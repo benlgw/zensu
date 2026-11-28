@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import type { position } from "../lib/engine/Gameboard.svelte";
-import { OnlineGame } from "../lib/multiplayer/OnlineGame";
-import type { Connection } from "../lib/multiplayer/OnlineGame";
+import { OnlineGame } from "../lib/multiplayer/OnlineGame.svelte";
+import type { Connection } from "../lib/multiplayer/OnlineGame.svelte";
 import type { Role, Status } from "../lib/multiplayer/P2P.svelte";
 import { position as at } from "./helpers";
 

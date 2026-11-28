@@ -12,7 +12,7 @@
 
 <!-- "disconnected" only happens after a game has started: keep showing the (now stopped) board. -->
 {#if connection.status === "connected" || connection.status === "disconnected"}
-    <Play {connection} />
+    <Play {connection} {name} />
 {:else}
-    <Lobby {name} code={connection.code} join={(code: string) => connection.join(code)} />
+    <Lobby bind:name code={connection.code} join={(code: string) => connection.join(code)} />
 {/if}

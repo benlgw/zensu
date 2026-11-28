@@ -17,7 +17,7 @@
         <h1>ZENSU</h1>
     </div>
     <div class="container">
-        <Join {name} {code} {join} />
+        <Join bind:name {code} {join} />
     </div>
     <div class="container">
         <!-- some other box art goes here -->

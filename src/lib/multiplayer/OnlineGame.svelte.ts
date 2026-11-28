@@ -55,3 +55,32 @@ export class OnlineGame {
     }
   }
 }
+
+type nameMessage = { type: "name"; name: string };
+
+export class Players {
+  #localName: string;
+  #opponentName = $state<string | null>(null);
+  #stopListening: () => void;
+
+  constructor(connection: Connection, localName: string) {
+    this.#localName = localName;
+    this.#stopListening = connection.on<nameMessage>(
+      "name",
+      (name) => (this.#opponentName = name.name),
+    );
+    connection.send({ type: "name", name: localName });
+  }
+
+  get localName() {
+    return this.#localName;
+  }
+
+  get opponentName() {
+    return this.#opponentName;
+  }
+
+  dispose(): void {
+    this.#stopListening();
+  }
+}

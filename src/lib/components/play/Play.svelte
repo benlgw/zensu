@@ -2,21 +2,34 @@
     import { onDestroy } from "svelte";
 
     import Gameboard from "./Gameboard.svelte";
-    import { OnlineGame } from "../../multiplayer/OnlineGame";
+    import { OnlineGame } from "../../multiplayer/OnlineGame.svelte";
+    import { Players } from "../../multiplayer/OnlineGame.svelte";
+    import { Chat } from "../../multiplayer/Chat.svelte";
+    import ChatBox from "./Chat.svelte";
 
     import type { position } from "../../engine/Gameboard.svelte";
     import type { P2P } from "../../multiplayer/P2P.svelte";
 
     let {
         connection,
+        name,
     }: {
         connection: P2P;
+        name: string;
     } = $props();
 
     // svelte-ignore state_referenced_locally
     const online = new OnlineGame(connection);
     const game = online.game;
-    onDestroy(() => online.dispose());
+    // svelte-ignore state_referenced_locally
+    const players = new Players(connection, name);
+    // svelte-ignore state_referenced_locally
+    const chat = new Chat(connection);
+    onDestroy(() => {
+        online.dispose();
+        players.dispose();
+        chat.dispose();
+    });
 
     const flipped = online.localColour === "red";
 
@@ -35,6 +48,7 @@
 </script>
 
 <div class="play">
+    <div></div>
     <Gameboard
         grid={game.gameboard.grid}
         {highlights}
@@ -44,12 +58,13 @@
         {movableColour}
         {flipped}
     />
+    <ChatBox {chat} {players} {flipped} />
 </div>
 
 <style>
     .play {
-        display: flex;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
         height: 100dvh;
     }
