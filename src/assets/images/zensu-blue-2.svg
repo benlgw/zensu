@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210.2838mm"
+   height="253.46912mm"
+   viewBox="-0.142 0.163 210.2838 253.46912"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-1.0625425e-4,-1.7104621e-4)">
+    <rect
+       style="fill:#d0b989;fill-opacity:1;stroke:#d0b989;stroke-width:0.264583;stroke-linecap:square;stroke-linejoin:round;stroke-opacity:1"
+       id="rect1"
+       width="210"
+       height="210"
+       x="3.5249581e-16"
+       y="43.5" />
+    <path
+       style="fill:#d0b989;fill-opacity:1;stroke:#d0b989;stroke-width:0.217196;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 210,43.5 C 175,29 140,14.5 104.99965,14.500145 69.9993,14.50029 35,29 0,43.5 L 0,50 L 210,50 Z"
+       id="path2"
+       transform="matrix(1,0,0,1.4886301,0,-21.260519)" />
+    <rect
+       style="fill:#008b9c;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:square;stroke-linejoin:round"
+       id="rect2"
+       width="78.720398"
+       height="78.720398"
+       x="96.789467"
+       y="-51.702999"
+       transform="rotate(45)" />
+    <rect
+       style="fill:#008b9c;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:square;stroke-linejoin:round"
+       id="rect2-3"
+       width="56.26976"
+       height="56.26976"
+       x="182.99333"
+       y="-29.252386"
+       transform="rotate(45)" />
+    <rect
+       style="fill:#008b9c;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:square;stroke-linejoin:round"
+       id="rect2-1"
+       width="56.26976"
+       height="56.26976"
+       x="182.99333"
+       y="34.500919"
+       transform="rotate(45)" />
+    <rect
+       style="fill:#008b9c;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:square;stroke-linejoin:round"
+       id="rect2-36"
+       width="56.26976"
+       height="56.26976"
+       x="119.24005"
+       y="34.500919"
+       transform="rotate(45)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:77.6111px;font-family:'Andale Mono';-inkscape-font-specification:'Andale Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#d0b989;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="82.527672"
+       y="114.79193"
+       id="text7"><tspan
+         id="tspan7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:77.6111px;font-family:'Andale Mono';-inkscape-font-specification:'Andale Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+         x="82.527672"
+         y="114.79193">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:59.9722px;font-family:'Andale Mono';-inkscape-font-specification:'Andale Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#d0b989;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="131.13499"
+       y="-129.42102"
+       id="text8"
+       transform="rotate(90)"><tspan
+         id="tspan8"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:59.9722px;font-family:'Andale Mono';-inkscape-font-specification:'Andale Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+         x="131.13499"
+         y="-129.42102">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:59.9722px;font-family:'Andale Mono';-inkscape-font-specification:'Andale Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#d0b989;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-122.48212"
+       y="-172.92102"
+       id="text9"
+       transform="scale(-1)"><tspan
+         id="tspan9"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:59.9722px;font-family:'Andale Mono';-inkscape-font-specification:'Andale Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+         x="-122.48212"
+         y="-172.92102">4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:59.9723px;font-family:'Andale Mono';-inkscape-font-specification:'Andale Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#d0b989;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-167.44633"
+       y="80.696152"
+       id="text10"
+       transform="rotate(-90)"><tspan
+         id="tspan10"
+         style="stroke-width:0.265"
+         x="-167.44633"
+         y="80.696152">1</tspan></text>
+  </g>
+</svg>

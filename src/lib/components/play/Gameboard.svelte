@@ -65,6 +65,7 @@
                         draggable={cell.colour === movableColour}
                         onDragStart={() => onSelect({ row: r, column: c })}
                         onDragEnd={onDeselect}
+                        {flipped}
                     />
                 {/if}
             </div>
@@ -75,16 +76,20 @@
 <style>
     .board {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: repeat(9, 1fr);
-        /*height: 100dvh;*/
-        /*width: 50%;*/
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-template-rows: repeat(9, minmax(0, 1fr));
+        height: 95dvh;
+        aspect-ratio: 6 / 9;
 
         background-color: blue;
     }
 
     .cell {
-        padding: 0 2rem;
+        /*padding: 0 2rem;*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         border: 1px solid black;
     }
 
