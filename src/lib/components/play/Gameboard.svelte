@@ -81,7 +81,8 @@
         height: 95dvh;
         aspect-ratio: 6 / 9;
 
-        background-color: blue;
+        background-color: #113a40;
+        border: 1rem solid #113a40;
     }
 
     .cell {
@@ -90,7 +91,7 @@
         justify-content: center;
         align-items: center;
 
-        border: 1px solid black;
+        border: 1px solid #b1a58c;
     }
 
     .highlight {
