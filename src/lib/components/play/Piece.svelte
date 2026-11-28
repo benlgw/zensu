@@ -36,22 +36,19 @@
     }
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
-    class="piece"
-    class:draggable
-    draggable={draggable ? "true" : "false"}
-    ondragstart={(event) => {
-        // why firefox :(
-        event.dataTransfer?.setData("text/plain", "");
-        onDragStart();
-    }}
-    ondragend={onDragEnd}
->
+<div class="piece">
     <img
         src={pieceImg(piece)}
         alt=""
+        class:draggable
         class:flipped={(!flipped && piece.colour === "red") || (flipped && piece.colour === "blue")}
+        draggable={draggable ? "true" : "false"}
+        ondragstart={(event) => {
+            // why firefox :(
+            event.dataTransfer?.setData("text/plain", "");
+            onDragStart();
+        }}
+        ondragend={onDragEnd}
     />
 </div>
 
@@ -61,16 +58,16 @@
         width: 95%;
     }
 
-    .draggable {
-        cursor: pointer;
-    }
-
     img {
         display: block;
         height: 100%;
         width: 100%;
 
-        pointer-events: none;
+        cursor: pointer;
+    }
+
+    .draggable {
+        cursor: pointer;
     }
 
     .flipped {
