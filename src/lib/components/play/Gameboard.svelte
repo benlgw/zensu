@@ -45,7 +45,7 @@
     }
 </script>
 
-<div class="board">
+<div class="gameboard">
     {#each rowOrder as r}
         {#each columnOrder as c}
             {@const cell = grid[r][c]}
@@ -74,7 +74,7 @@
 </div>
 
 <style>
-    .board {
+    .gameboard {
         display: grid;
         grid-template-columns: repeat(6, minmax(0, 1fr));
         grid-template-rows: repeat(9, minmax(0, 1fr));
